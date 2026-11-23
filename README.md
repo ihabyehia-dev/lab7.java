@@ -13,4 +13,4 @@ A hands-on Java exercise about nodes with two links: `next` and `prev`.
 Use package `lab5` in Eclipse and import `Node.java`, `DoubleLinked.java` and `main.java`. Run `main.java`.
 
 ## Important test cases
-Empty list, one node, deleting the head or tail, searching for a missing key and reversing the list. Head/tail and next/prev pointer handling were corrected and tested for empty, single-node and multi-node lists.
+Empty list, one node, deleting the head or tail, searching for a missing key and reversing the list. The list maintains head/tail and next/prev pointers during insertion, deletion and reversal.
