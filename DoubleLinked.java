@@ -1,5 +1,6 @@
 package lab5;
 
+/** Doubly linked list with head, tail, and two-way node links. */
 public class DoubleLinked {
     Node head;
     Node tail;
