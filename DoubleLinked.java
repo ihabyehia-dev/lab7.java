@@ -1,160 +1,113 @@
 package lab5;
 
 public class DoubleLinked {
-	Node head;
-	Node tail;
+    Node head;
+    Node tail;
 
-	public boolean isempty() {
-		boolean ok = false;
-		if (head == null) {
-			ok = true;
-			return ok;
-		}
-		return ok;
-	}
+    public boolean isempty() {
+        return head == null;
+    }
 
-	void insertatfront(int v) {
-		Node n = new Node(v);
+    void insertatfront(int v) {
+        Node n = new Node(v);
+        n.next = head;
+        if (head != null) head.prev = n;
+        else tail = n;
+        head = n;
+    }
 
-		n.next = head;
-		head = n;
-	}
+    void insertatback(int v) {
+        Node n = new Node(v);
+        n.prev = tail;
+        if (tail != null) tail.next = n;
+        else head = n;
+        tail = n;
+    }
 
-	void insertatback(int v) {
-		Node n = new Node(v);
+    void insertatkey(int key, int v) {
+        Node current = head;
+        while (current != null && current.data != key) current = current.next;
+        if (current == null) return;
+        if (current == head) {
+            insertatfront(v);
+            return;
+        }
+        Node n = new Node(v);
+        n.next = current;
+        n.prev = current.prev;
+        current.prev.next = n;
+        current.prev = n;
+    }
 
-		Node current = head;
-		Node prev = current;
+    void deletefromfront() {
+        if (head == null) return;
+        head = head.next;
+        if (head != null) head.prev = null;
+        else tail = null;
+    }
 
-		if (isempty() == true) {
-			head = n;
-		}
+    void deletefromback() {
+        if (tail == null) return;
+        tail = tail.prev;
+        if (tail != null) tail.next = null;
+        else head = null;
+    }
 
-		while (current.next != null) {
-			prev = current;
-			current = current.next;
-		}
-		n.prev = current;
-		current.next = n;
-	}
+    void deleteByvalue(int key) {
+        Node current = head;
+        while (current != null && current.data != key) current = current.next;
+        if (current == null) return;
+        if (current == head) {
+            deletefromfront();
+            return;
+        }
+        if (current == tail) {
+            deletefromback();
+            return;
+        }
+        current.prev.next = current.next;
+        current.next.prev = current.prev;
+    }
 
-	void insertatkey(int key, int v) {
-		Node n = new Node(v);
-		Node current = head;
-		Node prev = current;
+    public int searchrecursive(int key) {
+        return recursions(head, key, 0);
+    }
 
-		while (current != null && current.data != key) {
-			prev = current;
-			current = current.next;
-		}
-		n.prev = current.prev;
-		n.next = current;
-		current.prev.next = n;
-		current.prev = n;
-	}
+    int recursions(Node n, int key, int index) {
+        if (n == null) return -1;
+        if (n.data == key) return index;
+        return recursions(n.next, key, index + 1);
+    }
 
-	void deletefromfront() {
-		if (isempty() == true) {
-			return;
-		}
-		if (head == tail) {
-			head = null;
-			return;
-		}
-		head = head.next;
-		head.prev = null;
-	}
+    void displayforward() {
+        Node current = head;
+        while (current != null) {
+            System.out.print(current.data + ",");
+            current = current.next;
+        }
+        System.out.println();
+    }
 
-	void deletefromback() {
-		if (isempty() == true) {
-			return;
-		}
-		if (head == tail) {
-			head = null;
-			return;
-		}
-		Node current = head;
-		Node prev = current;
+    void displaybackward() {
+        Node current = tail;
+        while (current != null) {
+            System.out.print(current.data + ",");
+            current = current.prev;
+        }
+        System.out.println();
+    }
 
-		while (current.next != null) {
-			prev = current;
-			current = current.next;
-		}
-		tail = current.prev;
-		tail.next = null;
-	}
+    void reverse() {
+        Node current = head;
+        while (current != null) {
+            Node next = current.next;
+            current.next = current.prev;
+            current.prev = next;
+            current = next;
+        }
+        Node oldHead = head;
+        head = tail;
+        tail = oldHead;
+    }
 
-	void deleteByvalue(int key) {
-		if (head.data == key) {
-			head = null;
-		}
-		if (tail.data == key) {
-			tail = null;
-		}
-		Node current = head;
-		Node prev = current;
-
-		while (current.data != key && current != null) {
-			prev = current;
-			current = current.next;
-		}
-		current.next.prev = prev;
-		prev.next.next = current.next;
-	}
-
-	public int searchrecursive(int key) {
-		return recursions(head, key,0);
-	}
-
-	int recursions(Node n, int key, int index) {
-		if (n == null) {
-			return -1;
-		}
-		if (n.data == key) {
-			return index;
-		}
-		return recursions(n.next, key, index + 1);
-	}
-
-	void displayforward() {
-		Node current = head;
-		while (current != null) {
-			System.out.print(current.data + ",");
-			current = current.next;
-		}
-	}
-
-	void displaybackward() {
-		Node current = tail;
-		while (current != null) {
-			System.out.print(current.data + ",");
-			current = current.prev;
-		}
-	}
-
-	void reverse() {
-		Node n = new Node();
-		Node temp;
-		if (isempty() == true) {
-			return;
-		}
-		if (head == tail) {
-			return;
-		}
-		Node current = head;
-		Node prev = current;
-		Node cur = current;
-		while (current.next != null) {
-			prev = current.next;
-			cur = current.prev;
-			current = current.next;
-		}
-		temp = head;
-		head=tail.prev.next;
-		tail=head;
-	}
-	
-	Node s = new Node();
-	
-	
 }
